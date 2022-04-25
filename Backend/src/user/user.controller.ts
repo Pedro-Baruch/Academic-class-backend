@@ -1,10 +1,7 @@
 import {
   Body,
   Controller,
-  Delete,
   Get,
-  HttpCode,
-  HttpStatus,
   Param,
   ParseUUIDPipe,
   Post,
@@ -34,11 +31,5 @@ export class UserController {
   @Put(':id')
   async update(@Param('id', new ParseUUIDPipe()) id: string, @Body() body) {
     return await this.userService.update(id, body);
-  }
-
-  @Delete(':id')
-  @HttpCode(HttpStatus.NO_CONTENT)
-  async destroy(@Param('id', new ParseUUIDPipe()) id: string) {
-    await this.userService.deleteById(id);
   }
 }
