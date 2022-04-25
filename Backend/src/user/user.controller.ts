@@ -10,6 +10,8 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
+import { CreateUserDto } from './dto/createUser.dto';
+import { UpdateUserDto } from './dto/updateUser.dto';
 import { UserService } from './shared/user.service';
 
 @Controller('user')
@@ -22,7 +24,7 @@ export class UserController {
   }
 
   @Post()
-  async create(@Body() body) {
+  async create(@Body() body: CreateUserDto) {
     return await this.userService.create(body);
   }
 
@@ -32,7 +34,10 @@ export class UserController {
   }
 
   @Put(':id')
-  async update(@Param('id', new ParseUUIDPipe()) id: string, @Body() body) {
+  async update(
+    @Param('id', new ParseUUIDPipe()) id: string,
+    @Body() body: UpdateUserDto,
+  ) {
     return await this.userService.update(id, body);
   }
 
