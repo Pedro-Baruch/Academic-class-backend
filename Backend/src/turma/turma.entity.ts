@@ -1,3 +1,4 @@
+import { Postagem } from 'src/postagem/postagem.entity';
 import { User } from 'src/user/user.entity';
 import {
   Column,
@@ -5,6 +6,7 @@ import {
   Entity,
   JoinColumn,
   ManyToMany,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -28,10 +30,16 @@ export class Turma {
 
   @UpdateDateColumn({ name: 'updated_at' })
   updateAt: string;
+  
+  @JoinColumn({
+    name: 'user_id'
+  })
+  @OneToMany(type => User, id => String)
+  id: User;
 
   @JoinColumn({
-    name: 'user_id',
+    name: 'postagem_id'
   })
-  @ManyToMany(() => User)
-  user_id: User;
+  @OneToMany(type => Postagem, postagem_id => String)
+  postagem_id: Postagem;
 }

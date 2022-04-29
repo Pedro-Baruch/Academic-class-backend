@@ -1,6 +1,6 @@
 import { Turma } from 'src/turma/turma.entity';
 import { User } from 'src/user/user.entity';
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToMany, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity()
 export class Postagem {
@@ -25,12 +25,12 @@ export class Postagem {
     @JoinColumn({
         name: 'turma_id',
     })
-    @ManyToMany(() => Turma)
+    @ManyToOne(type => Turma, turma_id => String)
     turma_id: Turma;
 
     @JoinColumn({
         name: 'user_id'
     })
-    @ManyToMany(() => User)
-    user_id: User;
+    @ManyToOne(type => User, id => String)
+    id: User;
 }
