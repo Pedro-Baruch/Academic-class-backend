@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsString } from 'class-validator';
 
 export class UpdateTurmaDto {
   @IsNotEmpty()
@@ -6,4 +6,7 @@ export class UpdateTurmaDto {
 
   @IsString()
   descricao: string;
+
+  @IsBoolean()
+  status: boolean;
 }

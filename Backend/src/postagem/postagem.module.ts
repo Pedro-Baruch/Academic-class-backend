@@ -1,9 +1,14 @@
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { PostagemController } from './postagem.controller';
-import { SharedService } from './shared/shared.service';
+import { Postagem } from './postagem.entity';
+import { PostagemService } from './shared/shared.service';
+
 
 @Module({
+  imports: [TypeOrmModule.forFeature([Postagem])],
   controllers: [PostagemController],
-  providers: [SharedService]
+  providers: [PostagemService],
+  exports: [PostagemService],
 })
 export class PostagemModule {}
