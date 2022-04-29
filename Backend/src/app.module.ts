@@ -3,6 +3,9 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
 import { TurmaModule } from './turma/turma.module';
+import { AtividadeModule } from './atividade/atividade.module';
+import { PostagemModule } from './postagem/postagem.module';
+import { ComentarioModule } from './comentario/comentario.module';
 
 @Module({
   imports: [
@@ -19,6 +22,9 @@ import { TurmaModule } from './turma/turma.module';
     } as TypeOrmModuleOptions),
     UserModule,
     TurmaModule,
+    AtividadeModule,
+    PostagemModule,
+    ComentarioModule,
   ],
   controllers: [],
   providers: [],
