@@ -1,12 +1,12 @@
 import { User } from "src/user/user.entity";
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Comentario {
     @PrimaryGeneratedColumn('uuid')
     comentarioId: string;
 
-    @Column()
+    @CreateDateColumn()
     dataDoComentario: Date
 
     @Column()
