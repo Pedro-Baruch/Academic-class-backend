@@ -1,3 +1,4 @@
+import { Comentario } from 'src/comentario/comentario.entity';
 import { Postagem } from 'src/postagem/postagem.entity';
 import { Turma } from 'src/turma/turma.entity';
 import {
@@ -29,6 +30,9 @@ export class User {
 
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
+
+  @OneToMany( () => Comentario, (comentario) => comentario.user)
+  comentarios: Comentario[];
   
   @OneToMany( () => Turma, (turma) => turma.user)
   turmas: Turma[];

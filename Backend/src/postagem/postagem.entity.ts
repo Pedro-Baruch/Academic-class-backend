@@ -1,5 +1,7 @@
+import { Atividade } from 'src/atividade/atividade.entity';
+import { Comentario } from 'src/comentario/comentario.entity';
 import { User } from 'src/user/user.entity';
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity()
 export class Postagem {
@@ -23,4 +25,12 @@ export class Postagem {
 
     @ManyToOne( () => User, (User) => User.posts)
     user: User;
+
+    @OneToOne( () => Atividade)
+    @JoinColumn()
+    atividade?: Atividade
+
+    @ManyToOne( () => Comentario)
+    @JoinColumn()
+    comentarios: Comentario
 }
