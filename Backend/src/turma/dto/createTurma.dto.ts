@@ -9,4 +9,7 @@ export class CreateTurmaDto {
 
   @IsBoolean()
   status: boolean;
+
+  @IsNotEmpty()
+  userId: string
 }
