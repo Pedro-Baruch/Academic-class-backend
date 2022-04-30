@@ -23,7 +23,7 @@ export class TurmaController {
 
   @Post()
   async create(@Body() body: CreateTurmaDto): Promise<Turma> {
-    return await this.turmaService.create(body);
+    return await this.turmaService.createTurma(body);
   }
 
   @Get(':id')

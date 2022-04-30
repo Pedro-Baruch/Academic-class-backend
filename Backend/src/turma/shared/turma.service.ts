@@ -27,18 +27,21 @@ export class TurmaService {
     return turma
   }
 
-  async create(data: CreateTurmaDto): Promise<Turma> {
+  async createTurma(data: CreateTurmaDto): Promise<Turma> {
 
     if(!data.userId){
       throw new BadRequestException('Você deve se identificar!')
     }
     
     const user = await this.userService.findUserById(data.userId)
-    if(!user) {
+    if(!user) { 
       throw new BadRequestException('Usuário não encontrado')
     }
 
-    return await this.turmaRepository.save(this.turmaRepository.create(data));
+    const newTurma = this.turmaRepository.create({...data, user: user})
+
+    return await this.turmaRepository.save(newTurma)
+
   }
 
   async update(turma_id: string, data: UpdateTurmaDto): Promise<Turma> {
