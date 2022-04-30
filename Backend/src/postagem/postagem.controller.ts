@@ -15,7 +15,7 @@ export class PostagemController {
 
     @Post()
     async create(@Body() body: CreatePostagemDto): Promise<Postagem>{
-        return await this.postagemService.create(body);
+        return await this.postagemService.createPostagem(body);
     }
 
     @Get(':id')

@@ -1,5 +1,6 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { UserService } from 'src/user/shared/user.service';
 import { Repository } from 'typeorm';
 import { CreatePostagemDto } from '../dto/createPostagem.dto';
 import { UpdatePostagemDto } from '../dto/updatePostagem.dto';
@@ -9,7 +10,8 @@ import { Postagem } from '../postagem.entity';
 export class PostagemService {
     constructor(
         @InjectRepository(Postagem)
-        private readonly postagemRepository: Repository<Postagem>
+        private readonly postagemRepository: Repository<Postagem>,
+        private readonly userService: UserService
     ) {}
 
     async findAllPostagens(): Promise<Postagem[]>{
@@ -24,8 +26,18 @@ export class PostagemService {
         return postagem
     }
 
-    async create(data: CreatePostagemDto): Promise<Postagem>{
-        return await this.postagemRepository.save(this.postagemRepository.create(data));
+    async createPostagem(data: CreatePostagemDto): Promise<Postagem>{
+        if(!data.userId){
+            throw new BadRequestException('Você deve se identificar!')
+        }
+          
+        const user = await this.userService.findUserById(data.userId)
+        if(!user) { 
+            throw new BadRequestException('Usuário não encontrado')
+        }
+
+        const newPostagem = this.postagemRepository.create({...data, user: user})
+        return await this.postagemRepository.save(newPostagem);
     }
 
     async update(postagem_id: string, data: UpdatePostagemDto): Promise<Postagem> {

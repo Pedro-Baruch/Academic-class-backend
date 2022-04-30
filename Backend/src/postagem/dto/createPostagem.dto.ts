@@ -6,4 +6,7 @@ export class CreatePostagemDto{
 
     @IsString()
     descricaoPostagem: string;
+
+    @IsNotEmpty()
+    userId: string
 }
