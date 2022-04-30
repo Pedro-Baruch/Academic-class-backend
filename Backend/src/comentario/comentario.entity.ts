@@ -13,5 +13,5 @@ export class Comentario {
     comentario: string
 
     @ManyToOne( () => User, (user) => user.comentarios)
-    user: string
+    user: User
 }

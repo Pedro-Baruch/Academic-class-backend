@@ -1,5 +1,7 @@
-import { Body, Controller, Delete, Get, HttpCode, Param, ParseUUIDPipe, Post, Put } from '@nestjs/common';
-import { ComentarioService } from './shared/shared.service';
+import { Body, Controller, Delete, Get, HttpCode, Param, ParseUUIDPipe, Post } from '@nestjs/common';
+import { Comentario } from './comentario.entity';
+import { CreateComentarioDto } from './dto/createComentario.dto';
+import { ComentarioService } from './shared/comentario.service';
 
 
 @Controller('comentario')
@@ -7,26 +9,18 @@ export class ComentarioController {
     constructor(private readonly comentarioService: ComentarioService) {}
 
     @Get()
-    async index(){
-        return await this.comentarioService.findALL();
+    async findAll(): Promise<Comentario[]>{
+        return await this.comentarioService.findAllComentarios();
     }
 
     @Post()
-    async create(@Body() body){
-        return await this.comentarioService.create(body);
+    async createComentario(@Body() body: CreateComentarioDto): Promise<Comentario>{
+        return await this.comentarioService.createComentario(body);
     }
 
     @Get(':id')
-    async show(@Param('id', new ParseUUIDPipe()) id:string){
-        return await this.comentarioService.findOne(id);
-    }
-
-    @Put(':id')
-    async update(
-        @Param('id', new ParseUUIDPipe()) id: string,
-        @Body() body,
-    ){
-        return await this.comentarioService.update(id,body);
+    async findComentario(@Param('id', new ParseUUIDPipe()) id:string): Promise<Comentario>{
+        return await this.comentarioService.findComentarioById(id);
     }
 
     @Delete(':id')
