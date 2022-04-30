@@ -11,5 +11,5 @@ export class CreateTurmaDto {
   status: boolean;
 
   @IsNotEmpty()
-  userId: string
+  userId: string;
 }
