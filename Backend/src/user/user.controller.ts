@@ -5,36 +5,37 @@ import {
   Param,
   ParseUUIDPipe,
   Post,
-  Put,
+  Put
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/createUser.dto';
 import { UpdateUserDto } from './dto/updateUser.dto';
 import { UserService } from './shared/user.service';
+import { User } from './user.entity';
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get()
-  async index() {
-    return await this.userService.findALL();
+  async findAll(): Promise<User[]> {
+    return await this.userService.findAllUsers();
   }
 
   @Post()
-  async create(@Body() body: CreateUserDto) {
+  async create(@Body() body: CreateUserDto): Promise<User> {
     return await this.userService.create(body);
   }
 
   @Get(':id')
-  async show(@Param('id', new ParseUUIDPipe()) id: string) {
-    return await this.userService.findOne(id);
+  async findUser(@Param('id', new ParseUUIDPipe()) id: string): Promise<User> {
+    return await this.userService.findUserById(id);
   }
 
   @Put(':id')
   async update(
     @Param('id', new ParseUUIDPipe()) id: string,
     @Body() body: UpdateUserDto,
-  ) {
-    return await this.userService.update(id, body);
+  ): Promise<User> {
+    return await this.userService.updateUser(id, body);
   }
 }

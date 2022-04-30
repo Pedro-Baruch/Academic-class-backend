@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from '../dto/createUser.dto';
@@ -9,34 +9,54 @@ import { User } from '../user.entity';
 export class UserService {
   constructor(
     @InjectRepository(User)
-    private readonly userRepository: Repository<User>,
+    private userRepository: Repository<User>,
   ) {}
 
-  async findALL() {
-    return await this.userRepository.find();
+  async findAllUsers() : Promise<User[]> {
+    const users = await this.userRepository.find();
+    return users;
   }
 
-  async findOne(id: string) {
-    try {
-      return await this.userRepository.findOneOrFail({ where: { id } });
-    } catch (error) {
-      throw new NotFoundException(error.message);
+  async findUserById(id: string): Promise<User> {
+    const user = await this.userRepository.findOne({where: {id: id}});
+    if(!user) {
+      throw new NotFoundException('Usuário não encontrado');
     }
+    return user
   }
 
-  async create(data: CreateUserDto) {
+  async findUserByEmail(email: string): Promise<User> {
+    const user = await this.userRepository.findOne({where: {email: email}});
+    if(!user) {
+      throw new NotFoundException('Usuário não encontrado');
+    }
+    return user
+  }
+
+  async create(data: CreateUserDto): Promise<User> {
+    const user = this.findUserByEmail(data.email)
+    if(user) {
+      throw new BadRequestException('Email já existe!')
+    }
+    
     return await this.userRepository.save(this.userRepository.create(data));
   }
 
-  async update(id: string, data: UpdateUserDto) {
-    const user = await this.findOne(id);
+  async updateUser(id: string, data: UpdateUserDto): Promise<User> {
+    const user = await this.findUserById(id);
     this.userRepository.merge(user, data);
     return await this.userRepository.save(user);
   }
 
-  async deleteById(id: string) {
-    const dell = await this.findOne(id);
+  async deleteUser(id: string): Promise<boolean> {
+    const user = await this.findUserById(id);
 
-    await this.userRepository.softDelete(dell);
+    const deleted = await this.userRepository.delete(user);
+
+    if(deleted) {
+      return true
+    }
+    
+    return false
   }
 }
